@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Parsayi Gold</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body dir="rtl">
+    <div class="w3-top">
+      <button class="w3-button w3-xlarge w3-circle w3-light-grey w3-opacity w3-right w3-hover-yellow w3-hover-opacity" onclick="w3_open()">&#9776;</button></div>
+    <div class="w3-container">
+        <p style="text-align:center;">
+            <img src="img/logo.png" width="60%"> </p>
+        <br>
+        <div id="no-internet" class="w3-card w3-amber w3-center" style="display: none;" dir="rtl">
+            <br>
+            <h1>اینترنت قطع شد</h1>
+            <p>لطفا اتصال به اینترنت رو بررسی کنید.</p>
+            <br>
+        </div>
+
+        <div id="login-container" dir="rtl" style="display: none;">
+            <br>
+            <div id="login-form" class="w3-container w3-round-xlarge w3-sand">
+                <p>
+                    <label>نام کاربری</label>
+                    <input id="email" class="w3-input w3-border w3-round-large" name="email" type="text">
+                </p>
+                <p>
+                    <label>رمز عبور</label>
+                    <input id="password" class="w3-input w3-border w3-round-large" name="password" type="password">
+                </p>
+                <p>
+                    <button id="login" class="w3-button w3-blue w3-hover-light-blue w3-round-large" style="width:100%" onclick="login()">ورود به برنامه</button>
+                </p>
+            </div>
+            <p></p>
+            <div id="login-message" class="w3-card w3-padding-large">لطفا نام کاربری و رمز عبور خود را وارد کنید.
+            </div>
+        </div>
+
+        <div id="main-content" style="display: none;">
+            <div class="table-wrapper w3-round-xlarge">
+                <table id="tradesTable" class="w3-table w3-bordered w3-round-xlarge w3-amber">
+                    <thead>
+                        <tr>
+                            <th class="w3-center">سفارشات</th>
+                        </tr>
+                        <tr class="w3-khaki w3-center">
+                            <td class="w3-center">معامله</td>
+                            <td class="w3-center">کالا</td>
+                            <td class="w3-center">سفارش دهنده</td>
+                        </tr>
+                        <tr class="w3-khaki w3-center">
+                            <td class="w3-center">مقدار</td>
+                            <td class="w3-center">قیمت واحد</td>
+                            <td class="w3-center">قیمت کل</td>
+                        </tr>
+                        <tr class="w3-khaki w3-center">
+                            <td class="w3-center">تایید</td>
+                            <td class="w3-center">زمان</td>
+                            <td class="w3-center">رد</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tradesBody" class="w3-center"></tbody>
+                </table>
+            </div>
+            <p>
+
+                <div class="w3-center">
+                    <div class="w3-bar">
+                        <button class="w3-button w3-bar-item w3-black box-left" id="tradesNextButton" onclick="tradesNextPage()">بعدی</button>
+                        <button class="w3-button w3-bar-item w3-black" id="tradesCurrentPage">صفحه فعلی</button>
+                        <button class="w3-button w3-bar-item w3-black box-right" id="tradesPrevButton" onclick="tradesPrevPage()">قبلی</button>
+                    </div>
+                </div>
+                <p>
+                    <br>
+                </p>
+
+                <div class="table-wrapper w3-round-xlarge">
+                    <table id="bankTotalView" class="w3-table w3-bordered w3-round-xlarge w3-amber">
+                        <tr>
+                            <th colspan="3" class="w3-center">موجودی</th>
+                          </tr>
+                          <tr>
+                            <td id="bankMoney-text" class="w3-light-gray w3-center">موجودی نقدی</td>
+                            <td id="bankMoney" class="w3-pale-green w3-center" dir="ltr"></td>
+                            <td class="w3-pale-yellow w3-center">تومان</td>
+                          </tr>
+                          <tr>
+                            <td id="bankGold-text" class="w3-light-gray w3-center"></td>
+                            <td id="bankGold" class="w3-pale-green w3-center" dir="ltr"></td>
+                            <td class="w3-pale-yellow w3-center">گرم</td>
+                          </tr>
+                          <tr>
+                            <td id="bankQuadNor-text" class="w3-light-gray w3-center"></td>
+                            <td id="bankQuadNor" class="w3-pale-green w3-center" dir="ltr"></td>
+                            <td class="w3-pale-yellow w3-center">عدد</td>
+                          </tr>
+              
+                          <tr>
+                            <td id="bankHalfNor-text" class="w3-light-gray w3-center"></td>
+                            <td id="bankHalfNor" class="w3-pale-green w3-center" dir="ltr"></td>
+                            <td class="w3-pale-yellow w3-center">عدد</td>
+                          </tr>
+              
+                          <tr>
+                            <td id="bankCoinNor-text" class="w3-light-gray w3-center"></td>
+                            <td id="bankCoinNor" class="w3-pale-green w3-center" dir="ltr"></td>
+                            <td class="w3-pale-yellow w3-center">عدد</td>
+                          </tr>
+              
+                          <tr>
+                            <td id="bankQuadBank-text" class="w3-light-gray w3-center"></td>
+                            <td id="bankQuadBank" class="w3-pale-green w3-center" dir="ltr"></td>
+                            <td class="w3-pale-yellow w3-center">عدد</td>
+                          </tr>
+              
+                          <tr>
+                            <td id="bankHalfBank-text" class="w3-light-gray w3-center"></td>
+                            <td id="bankHalfBank" class="w3-pale-green w3-center" dir="ltr"></td>
+                            <td class="w3-pale-yellow w3-center">عدد</td>
+                          </tr>
+              
+                          <tr>
+                            <td id="bankCoinBank-text" class="w3-light-gray w3-center"></td>
+                            <td id="bankCoinBank" class="w3-pale-green w3-center" dir="ltr"></td>
+                            <td class="w3-pale-yellow w3-center">عدد</td>
+                          </tr>
+                    </table>
+                </div>
+                <p> <br>
+                </p>
+
+
+                <div class="table-wrapper w3-round-xlarge">
+                    <table id="accTable" class="w3-table w3-bordered w3-round-xlarge w3-amber">
+                        <thead>
+                            <tr>
+                                <th class="w3-center">معاملات</th>
+                            </tr>
+                            <tr class="w3-khaki w3-center">
+                                <td class="w3-center">معامله</td>
+                                <td class="w3-center">سفارش دهنده</td>
+                                <td class="w3-center">کالا</td>
+                                <td class="w3-center">مقدار</td>
+                                <td class="w3-center">قیمت واحد</td>
+                                <td class="w3-center">قیمت کل</td>
+                                <td class="w3-center">زمان</td>
+                            </tr>
+                        </thead>
+                        <tbody id="accBody" class="w3-center"></tbody>
+                    </table>
+                </div>
+                <p>
+
+
+                    <div class="w3-center">
+                        <div class="w3-bar">
+                            <button class="w3-button w3-bar-item w3-black box-left" id="accNextButton" onclick="accNextPage()">بعدی</button>
+                            <button class="w3-button w3-bar-item w3-black" id="accCurrentPage">صفحه فعلی</button>
+                            <button class="w3-button w3-bar-item w3-black box-right" id="accPrevButton" onclick="accPrevPage()">قبلی</button>
+                        </div>
+                    </div>
+                    <p>
+                        <br>
+                    </p>
+
+
+
+                    <div class="table-wrapper w3-round-xlarge">
+                        <table id="rejectTable" class="w3-table w3-bordered w3-round-xlarge w3-amber">
+                            <thead>
+                                <tr>
+                                    <th class="w3-center">رد شده‌ها</th>
+                                </tr>
+                                <tr class="w3-khaki w3-center">
+                                    <td class="w3-center">معامله</td>
+                                    <td class="w3-center">سفارش دهنده</td>
+                                    <td class="w3-center">کالا</td>
+                                    <td class="w3-center">مقدار</td>
+                                    <td class="w3-center">قیمت واحد</td>
+                                    <td class="w3-center">قیمت کل</td>
+                                    <td class="w3-center">زمان</td>
+                                </tr>
+                            </thead>
+                            <tbody id="rejectBody" class="w3-center"></tbody>
+                        </table>
+                    </div>
+                    <p>
+
+                        <div class="w3-center">
+                            <div class="w3-bar">
+                                <button class="w3-button w3-bar-item w3-black box-left" id="rejectNextButton" onclick="rejectNextPage()">بعدی</button>
+                                <button class="w3-button w3-bar-item w3-black" id="rejectCurrentPage">صفحه فعلی</button>
+                                <button class="w3-button w3-bar-item w3-black box-right" id="rejectPrevButton" onclick="rejectPrevPage()">قبلی</button>
+                            </div>
+                        </div>
+                        <p>
+                            <br>
+                        </p>
+
+
+
+                        <div class="table-wrapper w3-round-xlarge">
+                            <table id="deliveryTable" class="w3-table w3-bordered w3-round-xlarge w3-amber">
+                                <thead>
+                                    <tr>
+                                        <th class="w3-center">تحویل</th>
+                                    </tr>
+                                    <tr class="w3-khaki w3-center">
+                                        <td class="w3-center">سفارش دهنده</td>
+                                        <!-- <td class="w3-center">ای دی کاربر</td> -->
+                                        <td class="w3-center">کالا</td>
+                                        <td class="w3-center">مقدار</td>
+                                        <td class="w3-center">هزینه تحویل</td>
+                                        <td class="w3-center">زمان</td>
+                                        <td class="w3-center">وضعیت</td>
+                                        <td class="w3-center">حذف</td>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="deliveryBody" class="w3-center"></tbody>
+                            </table>
+                        </div>
+                        <p>
+
+                            <div class="w3-center">
+                                <div class="w3-bar">
+                                    <button class="w3-button w3-bar-item w3-black box-left" id="deliveryNextButton" onclick="deliveryNextPage()">بعدی</button>
+                                    <button class="w3-button w3-bar-item w3-black" id="deliveryCurrentPage">صفحه فعلی</button>
+                                    <button class="w3-button w3-bar-item w3-black box-right" id="deliveryPrevButton" onclick="deliveryPrevPage()">قبلی</button>
+                                </div>
+                            </div>
+                            <p>
+                                <br>
+                            </p>
+
+
+
+                            <div class="table-wrapper w3-round-xlarge">
+                                <table id="transactionTable" class="w3-table w3-bordered w3-round-xlarge w3-amber">
+                                    <thead>
+                                        <tr>
+                                            <th class="w3-center">تراکنش‌ها</th>
+                                        </tr>
+                                        <tr class="w3-khaki w3-center">
+                                            <td class="w3-center">مشتری</td>
+                                            <td class="w3-center">کالا</td>
+                                            <td class="w3-center">مقدار</td>
+                                            <td class="w3-center">توضیحات</td>
+                                            <td class="w3-center">تاریخ</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="transactionBody" class="w3-center"></tbody>
+                                </table>
+                            </div>
+                            <p>
+
+                                <div class="w3-center">
+                                    <div class="w3-bar">
+                                        <button class="w3-button w3-bar-item w3-black box-left" id="transactionNextButton" onclick="transactionNextPage()">بعدی</button>
+                                        <button class="w3-button w3-bar-item w3-black" id="transactionCurrentPage">صفحه فعلی</button>
+                                        <button class="w3-button w3-bar-item w3-black box-right" id="transactionPrevButton" onclick="transactionPrevPage()">قبلی</button>
+                                    </div>
+                                </div>
+                                <p>
+                                    <br>
+                                </p>
+                                <div id="userBankView" class="w3-panel w3-pale-blue w3-border w3-round-xlarge w3-hover-pale-green"><h4>جدول مالی کاربران</h4>
+                                <p> نام کاربر
+                                    </p><div style="text-align: right; direction: rtl;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="userSearchInput" placeholder="حداقل سه حرف بنویسید ...." autocomplete="off"></div>
+                                                <div id="userResults"></div><br>
+                                <table id="userBankViewTable" class="w3-table w3-bordered w3-round-xlarge w3-amber">
+            <tbody id="ubvBody" class="w3-center w3-pale-yellow"></tbody>
+          </table><br>
+                                </div>
+                                <br>
+                                <br>
+
+                                <div class="table-wrapper w3-round-xlarge">
+                                    <table id="inputTable" class="w3-table-all w3-round-xlarge w3-border-0">
+                                        <thead>
+                                        <tr class="w3-amber">
+                                            <th style="text-align: center; direction: rtl;"> ورودی‌ها (x,y,z,w)</th>
+                                            </thead>
+                                            <tbody>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-pale-blue" style="text-align: right; direction: rtl;">اصلاحیه</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="Fc" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="text" id="cInput">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-pale-blue" >x</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="Fx" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="xInput">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-pale-blue">y</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="Fy" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="yInput">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-pale-blue">z</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="Fz" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="zInput">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-pale-blue">w</td>
+                                        </tr>
+                                        <tr>
+                                            <td id="Fw" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="wInput">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-pale-green"style="text-align: center; direction: rtl;">
+                                                <button class="w3-button w3-bar-item w3-black w3-round-xlarge" onclick="updateInput()">بروزرسانی</button>
+                                            </td>
+                                        </tr>
+                                            </tbody>
+                                    </table>
+
+
+                                </div>
+                                <br>
+                                <br>
+                                <div id="bazarStatus" class="w3-panel w3-khaki w3-border w3-round-xlarge w3-padding-64 w3-hover-light-blue">
+                                    <label class="w3-xlarge" for="bazarSwitch">فعال بودن بازار</label>
+                                    <input class="w3-check" type="checkbox" id="bazarSwitch">
+                                    <br>
+                                    <label class="w3-xlarge" for="stateSwitch">داده‌گیری آنلاین</label>
+                                    <input class="w3-check" type="checkbox" id="stateSwitch">
+                                </div>
+                                <br>
+                                <br>
+                                <div class="table-wrapper w3-round-xlarge">
+                                    <table id="formulaTable" class="w3-table-all  w3-round-xlarge w3-border-0">
+
+                                        <tr class="w3-amber">
+                                            <th style="text-align: center; direction: rtl;"> فرمول (x,y,z,w)</th>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">هر گرم آبشده</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="Fgold" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="FFgold">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">ربع سکه عادی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="FquadN" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="FFquadN">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">نیم سکه عادی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="FhalfN" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="FFhalfN">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">تمام سکه عادی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="FcoinN" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="FFcoinN">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">ربع سکه بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="FquadB" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="FFquadB">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">نیم سکه بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="FhalfB" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="FFhalfB">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">تمام سکه بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="FcoinB" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="FFcoinB">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; direction: rtl;">
+                                                <button class="w3-button w3-bar-item w3-black w3-round-xlarge" onclick="updateFormula()">بروزرسانی فرمول‌ها</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+
+                                </div>
+
+                                <br>
+                                <br>
+                                <br>
+
+                                <div class="table-wrapper w3-round-xlarge">
+                                    <table id="commissionTable" class="w3-table-all  w3-round-xlarge w3-border-0">
+
+                                        <tr class="w3-amber">
+                                            <th style="text-align: center; direction: rtl;">کارمزد</th>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">هر گرم آبشده</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="Cgold" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="CCgold">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">ربع سکه عادی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="CquadN" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="CCquadN">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">نیم سکه عادی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="ChalfN" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="CChalfN">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">تمام سکه عادی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="CcoinN" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="CCcoinN">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">ربع سکه بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="cquadB" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="CCquadB">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">نیم سکه بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="ChalfB" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="CChalfB">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">تمام سکه بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="CcoinB" style="text-align: center; direction: ltr;">
+                                                <input class="w3-input w3-border w3-round-large" type="text" id="CCcoinB">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; direction: rtl;">
+                                                <button class="w3-button w3-bar-item w3-black w3-round-xlarge" onclick="updateCommission()">بروزرسانی کارمزدها</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+
+                                <br>
+                                <br>
+                                <br>
+
+
+                                <div class="table-wrapper w3-round-xlarge">
+                                    <table id="transactionUpdateTable" class="w3-table-all  w3-border-0">
+
+                                        <tr class="w3-amber">
+                                            <th style="text-align: center; direction: rtl;">دریافت و پرداخت</th>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">نام کاربر</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" style="text-align: right; direction: rtl;">
+                                                <input class="w3-round-large w3-input w3-border" type="text" id="searchInput" placeholder="حداقل سه حرف بنویسید ...." autocomplete="off">
+                                                <div id="results"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">شناسه کاربر</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="tuserid" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="text" id="ttuserid" disabled>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">پول</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="tmoney" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="number" id="ttmoney" value="0">
+                                                <div id="moneyWC"></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">هر گرم آبشده</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="tgold" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="number" id="ttgold" value="0">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">ربع سکه عادی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="tquadN" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="number" id="ttquadN" value="0">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">نیم سکه عادی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="thalfN" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="number" id="tthalfN" value="0">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">تمام سکه عادی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="tcoinN" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="number" id="ttcoinN" value="0">
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">ربع سکه بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="tquadB" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="number" id="ttquadB" value="0">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">نیم سکه بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="thalfB" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="number" id="tthalfB" value="0">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">تمام سکه بانکی</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="tcoinB" style="text-align: center; direction: ltr;">
+                                                <input class="w3-round-large w3-input w3-border" type="number" id="ttcoinB" value="0">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right; direction: rtl;">توضیحات</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-sand" id="comm" style="text-align: center; direction: ltr;">
+                                                <input style="text-align: right; direction: rtl;" class="w3-round-large  w3-input w3-border" type="text" id="comment">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center; direction: rtl;">
+                                                <button class="w3-button w3-bar-item w3-black w3-round-xlarge" onclick="updateTransaction()">بروزرسانی تراکنش‌ها</button>
+                                            </td>
+                                        </tr>
+                                    </table></div>
+                                <br>
+                                <br>
+                                <br>
+                                <div class="w3-center">
+                                 <button class="w3-button w3-bar-item w3-red w3-hover-pink w3-xlarge w3-round-xlarge" onclick="logout()">خروج</button>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+        </div>
+    </div>
+
+        <div id="sidebar" class="w3-top w3-bar-block w3-collapse w3-pale-blue w3-center menuBar" style="display:none">
+          <a onclick="w3_close()" class="w3-bar-item w3-button w3-deep-orange w3-hover-pink">
+            &times; بستن منو
+          </a>
+          <a href="#tradesTable" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">سفارشات
+          </a>
+          <a href="#bankTotalView" onclick="w3_close()"
+          class="w3-bar-item w3-button w3-hover-blue-grey">موجودی
+        </a>
+          <a href="#accTable" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">معاملات
+          </a>
+          <a href="#rejectTable" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">رد شده‌ها
+          </a>
+          <a href="#deliveryTable" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">تحویل
+          </a>
+          <a href="#transactionTable" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">تراکنش‌ها
+          </a>
+        <a href="#userBankView" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">جدول مالی کاربران
+          </a>
+          <a href="#inputTable" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">ورودی‌ها
+          </a>
+            <a href="#bazarStatus" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">وضعیت بازار
+          </a>
+            <a href="#formulaTable" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">فرمول
+          </a>
+          <a href="#commissionTable" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">کارمزد
+          </a>
+          <a href="#transactionUpdateTable" onclick="w3_close()"
+            class="w3-bar-item w3-button w3-hover-blue-grey">دریافت و پرداخت
+          </a>
+            <a onclick="logout()" class="w3-bar-item w3-button w3-deep-orange w3-hover-pink">
+           خروج
+          </a>
+      </div>
+
+      <div id="loading-overlay">
+        <div id="loading-spinner" class="loading-spinner"></div>
+    </div>
+
+
+    <!-- <script src="cordova.js"></script> -->
+    <script src="js/pocketbase.umd.js"></script>
+    <script src="js/index.js?v=0.0.1"></script>
+</body>
+
+</html>
