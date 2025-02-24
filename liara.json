@@ -1,5 +1,5 @@
 {
-  "app": "parsayi-admin",
+  "app": "padmin",
   "port": 80,
   "build": {
     "location": "iran"
